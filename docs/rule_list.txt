@@ -1,0 +1,35 @@
+
+                                       real/complex      test
+matrix multiplication          |        
+
+tensor network                 |
+
+least sq                       |          complex        done
+
+qr                             |
+
+symeigen                       |
+
+svd                            |
+
+schatten norm                  |
+
+matrix inversion               |
+
+det                            |
+
+lu                             |
+
+linear equations               | 
+
+expmv                          |
+
+norm matrix analytic function  |
+
+Cholesky decomposition         |
+
+LP                             |
+
+SDP                            |
+
+
