@@ -11,7 +11,6 @@ Base.:-(zero::ZeroAdder, a) = -a
 Base.:-(zero::ZeroAdder) = zero
 
 
-include("chainrules.jl")
 
 include("qr.jl")
 include("svd.jl")
@@ -29,6 +28,8 @@ include("sdp.jl")
 include("lu.jl")
 include("mxmul.jl")
 include("scha_norm.jl")
+
+include("chainrules.jl")
 
 
 end

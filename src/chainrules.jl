@@ -63,3 +63,61 @@ function rrule(::typeof(lstsq), A, b)
     end
     return x, pullback
 end
+
+function rrule(::typeof(mxmul),A,B)
+    C = mxmul(A,B)
+    function pullback(dy)
+        Ā, B̄ = @thunk mxmul_back(A,B,unthunk(dy))
+        return (NoTangent(), Ā, B̄)
+    end
+    return C, pullback
+end
+
+function rrule(::typeof(scha_norm), A, p)
+    a = scha_norm(A, p)
+    function pullback(ā)
+        Ā = @thunk scha_norm_back(A, p, unthunk(ā))
+        return (NoTangent(), Ā, NoTangent())
+    end
+    return a, pullback
+end
+
+function rrule(::typeof(cls),A)
+    L = cls(A)
+    function pullback(L̄)
+        Ā = @thunk cls_back(A, unthunk(L̄))
+        return (NoTangent(),Ā)
+    end
+    return L, pullback
+end
+
+function rrule(::typeof(det),A)
+    a = det(A)
+    function pullback(ā)
+        Ā = @thunk det_back(A,unthunk(ā))
+        return (NoTangent(), Ā)
+    end
+
+    return a, pullback
+end
+
+function rrule(::typeof(inv),A)
+    B = inv(A)
+    function pullback(B̄)
+        Ā = @thunk inv_back(A,unthunk(B̄))
+        return (NoTangent(), Ā)
+    end
+
+    return B, pullback
+end
+
+function rrule(::typeof(lneq), A, b)
+	x = lneq(A, b) 
+    function pullback(dy)
+        Δy = unthunk(dy)
+        ΔA, Δb = @thunk lneq_back(A, b, x, Δy)
+        return (NoTangent(), ΔA, Δb)
+    end
+    return x, pullback
+end
+

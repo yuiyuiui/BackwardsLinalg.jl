@@ -1,6 +1,6 @@
 
                                        real/complex      test
-matrix multiplication          |        
+matrix multiplication          |        complex          done
 
 tensor network                 |
 
@@ -12,24 +12,27 @@ symeigen                       |
 
 svd                            |
 
-schatten norm                  |
+schatten norm                  |          complex        done
 
-matrix inversion               |
+matrix inversion               |          complex        done
 
-det                            |
+det                            |          complex        done
 
 lu                             |
 
-linear equations               | 
+linear equations               |          compelex       done
 
 expmv                          |
 
 norm matrix analytic function  |
 
-Cholesky decomposition         |
+Cholesky decomposition         |          complex      done
 
 LP                             |
 
 SDP                            |
 
+GMRES                          |          
+
+Pfafain                        | 
 

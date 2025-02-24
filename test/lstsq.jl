@@ -5,13 +5,11 @@ import Mooncake, DifferentiationInterface
 
 
 function gradient_check(f, args...; η = 1e-5)
-    println(1)
     g = gradient(f, args...)
-    println(2)
     dy_expect = η*sum(abs2.(g[1]))
-    println(3)
+    @show dy_expect
     dy = f(args...)-f([gi === nothing ? arg : arg.-η.*gi for (arg, gi) in zip(args, g)]...)
-    println(4)
+    @show dy
     isapprox(dy, dy_expect, rtol=1e-2, atol=1e-8)
 end
 
@@ -32,7 +30,6 @@ end
 		end
 		tfuncA(A) = tfunc(A, b)
 		tfuncb(b) = tfunc(A, b)
-        @show T
 		@test gradient_check(tfuncA, A)
 		@test gradient_check(tfuncb, b)
 	end

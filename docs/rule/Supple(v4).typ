@@ -34,7 +34,16 @@ _Backward rule_: #rule
 
 
 = Notations
-DONE
+Something should be careful:
+
+1. For $z = x + i y$, 
+$
+  overline(x) != overline(z)|_(y=0)
+$
+
+But for Lp norm loss function these two don't make difference.
+
+2. For a symmetric matrix input $A$, "$A$ is an input matrix" is not equal to "$A$ is a symmetric input matrix". To do the latter we shoule replace $overline(A)$ with $(overline(A) + overline(A)^(dagger))/2$
 
 = Matrix multiplication <matrix-multiplication>
 DONE
@@ -45,9 +54,17 @@ DONE
 = The least square problem <least-square-problem>
 Complex Version
 #rulebox([
+
+(1)
 $ 
 &A in CC^(m times n) , r a n k(A) =  n, b in CC^m \  
 &(A,b) arrow x in CC^n = arg min \|A x-b\| 
+$
+
+(2)
+$
+  &A in CC^(m times n) , b in CC^m \  
+ &(A,b) arrow a in RR = min \|A x-b\| 
 $
 ],
 [
@@ -197,15 +214,15 @@ $
 [
   Denote the adjoint matrix of $A$ as $A^(a d)$:
 $
-& overline(A)=overline(a)A^(a d*)
+& overline(A)=overline(a)A^(a d dagger)
 $
 ])
 Proof: 
 $
-  &delta a=T r(A(a d T)delta A)\
+  &delta a=T r(A^(a d )delta A)\
   &arrow 2delta L=T r(overline(a)^* delta a +h.c.)=T r(overline(A)^(dagger)delta A+h.c.)\
-  &=T r(overline(a)^* A^(a d T)delta A +h.c.)
-  &arrow overline(A)=overline(a)A^(a d*)
+  &=T r(overline(a)^* A^(a d )delta A +h.c.)\
+  &arrow overline(A)=overline(a)A^(a d dagger)
 
 $
 
@@ -259,14 +276,16 @@ $
 = Linear equations
 #rulebox([
  $
-   & A in CC^(n times n), det A !=0, b in RR^n\
-   A,b arrow x: A x =b
+   & A in CC^(m times n), det A'A !=0, b in RR^m\
+   & A,b arrow x: A x =b
  $
 ],
 [
 $
-  overline(A) = - A^(-dagger)overline(x)b^(dagger)A^(-dagger),quad overline(b)=A^(dagger)overline(x)
+&overline(b) = Q R^(- dagger) overline(x)\
+&overline(A) = (b - A x)overline(x)^(dagger) R^(-1)R^(-dagger) -   Q R^(-dagger)overline(x) x^(dagger)
 $
+Where $A=Q R$ is the QR decomposition.
 ])
 Proof: 
 $
@@ -354,7 +373,7 @@ where $L$ is a lower triangular matrix with real numbers on the diagonal.
   $
   Here, the function copyltu() means:
   $
-    c o p y l t u(X) = X compose (M^T+1/2 I) +X^(dagger) compose (M-1/2 I)
+    c o p y l t u(X) = X compose M^T +X^(dagger) compose M
   $
 ])
 Proof: 
@@ -498,8 +517,8 @@ $
 $
 
 $
-  & arrow T r(overline(L)^T delta L) = T r(sum_(i in M)overline(A_i)^T delta A_i + overline(b)_B^T delta d_B) = v^T(overline(L))delta v(L) \
-  &= 1/2 v^T(overline(L))D^(-1)(delta b_B - (T r(x delta A_i))_(i in M))\
+  & arrow T r(overline(L)^T delta L) = T r(sum_(i in M)overline(A_i)^T delta A_i + overline(b)_B^T delta d_B) = v^T (overline(L))delta v(L) \
+  &= 1/2 v^T (overline(L))D^(-1)(delta b_B - (T r(x delta A_i))_(i in M))\
 $
 
 $
