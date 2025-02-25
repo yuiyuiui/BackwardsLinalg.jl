@@ -1,6 +1,7 @@
 using BackwardsLinalg
 using Test, Random
 using Zygote
+using LinearAlgebra
 
 function gradient_check(f, args...; η = 1e-5)
     g = gradient(f, args...)
@@ -11,19 +12,19 @@ function gradient_check(f, args...; η = 1e-5)
     isapprox(dy, dy_expect, rtol=1e-2, atol=1e-8)
 end
 
-@testset "cls" begin
+@testset "lu" begin
     T = ComplexF64
-
+    M =5
+    A = rand(T,M,M)
     function tfunc(A)
-        L = BackwardsLinalg.cls(A)
-        return sum(abs2.(L[:,1]))
+        L,U,_ = BackwardsLinalg.lu(A)
+        return sum(abs2.(L[:,1]'*U[:,end]))
     end
-
-    M = 10
-    A = randn(T, M, M)
-    A = A' * A
 
     @test gradient_check(tfunc,A)
 
 end
+
+
+
 

@@ -18,7 +18,7 @@ matrix inversion               |          complex        done
 
 det                            |          complex        done
 
-lu                             |
+lu                             |          complex        done
 
 linear equations               |          compelex       done
 
@@ -26,7 +26,7 @@ expmv                          |
 
 norm matrix analytic function  |
 
-Cholesky decomposition         |          complex      done
+Cholesky decomposition         |           complex       done
 
 LP                             |
 

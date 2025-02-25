@@ -130,3 +130,12 @@ function rrule(::typeof(lneq), A, b)
     return x, pullback
 end
 
+function rrule(::typeof(lu), A)
+	x = lu(A) 
+    function pullback(dy)
+        Ā = @thunk lu_back(A, unthunk(dy)...)
+        return (NoTangent(), Ā)
+    end
+    return x, pullback
+end
+

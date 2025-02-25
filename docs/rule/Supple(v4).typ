@@ -269,7 +269,9 @@ $
 $
 
 We only condider matrice that have LU decomposition. For those who can't, we have to get the $P$ and
-$A arrow P A arrow L U(P A)$
+$ A arrow P A arrow L U(P A) $
+
+Now $A = P overline(P A)$.
 
 #rulebox([
  
@@ -281,15 +283,15 @@ $L$ is a lower triangular matrix with all $1$ on its diagonal. $U$ is a upper tr
 ],
 [
 $
-  overline(A) = L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
+  overline(A) = P L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
 $
-$K$ is an upper triangular matrix with with all 1 . $J=I-K$
+$K$ is an upper triangular matrix with with all 1 . $J=o n e s-K$
 ])
 
-Proof: 
+Proof: First we consider $A =L U$:
 $
   &A=L U\
-  & arrow delta A=delta U + L delta U\
+  & arrow delta A = delta L U + L delta U\
   & arrow L^(-1)delta A U^(-1) = L^(-1) delta L +delta U U^(-1),quad delta U =L^(-1)(delta A-delta L U)
 $
 Because $delta U U^(-1)$ is upper triangle and $L^(-1)delta L$ lower triangle with 0 on diagonal,
@@ -306,7 +308,11 @@ $
   & = T r (U^(-1)  ((overline(L)^(dagger)L-U overline(U)^(dagger))compose J^T + U overline(U)^(dagger))  L^(-1)delta A+h.c.)\
   & = T r (U^(-1)  (overline(L)^(dagger)L compose J^T + U overline(U)^(dagger)compose K^T)  L^(-1)delta A+h.c.)\
   & arrow overline(A) = L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
+$
 
+So for general $A$, we have :
+$
+  & overline(A) = P L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
 $
 
 = Linear equations
