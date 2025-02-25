@@ -4,11 +4,11 @@ matrix multiplication          |        complex          done
 
 tensor network                 |
 
-least sq                       |          complex        done
+least sq / arg least sq        |        complex          done
 
 qr                             |
 
-symeigen                       |
+symeigen                       |          
 
 svd                            |
 

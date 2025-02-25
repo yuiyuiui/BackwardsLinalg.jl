@@ -54,14 +54,23 @@ function rrule(::typeof(symeigen), A)
     return (E, U), pullback
 end
 
-function rrule(::typeof(lstsq), A, b)
-	x = lstsq(A, b) 
+function rrule(::typeof(arg_lstsq), A, b)
+	x = arg_lstsq(A, b) 
     function pullback(dy)
         Δy = unthunk(dy)
-        ΔA, Δb = @thunk lstsq_back(A, b, x, Δy)
+        ΔA, Δb = @thunk arg_lstsq_back(A, b, x, Δy)
         return (NoTangent(), ΔA, Δb)
     end
     return x, pullback
+end
+
+function rrule(::typeof(lstsq),A,b)
+    a = lstsq(A,b)
+    function pullback(ā)
+        Ā,b̄ = @thunk lstsq_back(A,b,unthunk(ā))
+        return (NoTangent(),Ā,b̄)
+    end
+    return a, pullback
 end
 
 function rrule(::typeof(mxmul),A,B)

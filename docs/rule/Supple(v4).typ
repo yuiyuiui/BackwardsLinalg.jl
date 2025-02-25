@@ -58,23 +58,37 @@ Complex Version
 (1)
 $ 
 &A in CC^(m times n) , r a n k(A) =  n, b in CC^m \  
-&(A,b) arrow x in CC^n = arg min \|A x-b\| 
+&(A,b) arrow x in CC^n = arg min ||A x-b||
 $
 
 (2)
 $
   &A in CC^(m times n) , b in CC^m \  
- &(A,b) arrow a in RR = min \|A x-b\| 
+ &(A,b) arrow a in RR = min ||A x-b||\
+ & arrow a = b^(dagger) (I -U U^(dagger))b
 $
+
+Here $U = s v d(A).U$
 ],
 [
+
+(1)
 $
 &overline(b) = Q R^(- dagger) overline(x)\
 &overline(A) = (b - A x)overline(x)^(dagger) R^(-1)R^(-dagger) -   Q R^(-dagger)overline(x) x^(dagger)
 $
 Where $A=Q R$ is the QR decomposition.
-])
 
+(2)
+$
+  & overline(b) = 2overline(a)(I - U U^(dagger))b\
+  & overline(U) = -2overline(a)b b^(dagger)U\
+$
+
+Use svd_back to get $overline(A)$ from $overline(U)$
+])
+Proof:
+(1)
 $
 &||A X-b||^2=(A X-b)^(dagger) (A X-b) \
 
@@ -104,6 +118,28 @@ $
 
   &overline(b)=overline(x)^(dagger)(A^(dagger)A)^(-1)A^(dagger)\
   &=Q R^(- dagger) overline(x)
+$
+
+
+(2)
+$
+  & A^(dagger)A x = A^(dagger)b, quad a = (A x-b)^(dagger)(A x-b)\
+  & arrow S V^(dagger) x = U^(dagger)b\
+  & arrow  a = b^(dagger)(b - A x) = b^(dagger)(b - U S V^(dagger)x) \
+  & = b^(dagger) (I - U U^dagger) b\
+$
+
+Then 
+$
+  &delta a = delta b^dagger (I - U U^dagger)b +b^(dagger)(-delta U U^dagger)b + b^dagger (-U delta U^dagger)b = b^dagger (I - U U^dagger) delta b
+$
+
+Plug it and we get:
+$
+  & tr(overline(b)^dagger delta b + overline(U)^dagger delta U +h.c.) = 2tr(overline(a)delta a)\
+  & = 2overline(a) tr(b^dagger (I-U U^dagger) delta b - U^dagger b b^dagger delta U +h.c.)\
+  & arrow overline(b)^dagger = b^dagger (I-U U^dagger), quad overline(U)^dagger = - U^dagger b b^dagger\
+  & overline(b) = 2overline(a)(I-U U^dagger)b, quad overline(U) = -2overline(a) b b^dagger U\
 $
 
 
