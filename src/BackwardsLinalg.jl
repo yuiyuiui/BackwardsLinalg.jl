@@ -2,6 +2,7 @@ module BackwardsLinalg
 
 using ChainRulesCore; import ChainRulesCore: rrule
 using LinearAlgebra; import LinearAlgebra: ldiv!
+using JuMP, GLPK
 
 struct ZeroAdder end
 Base.:+(a, zero::ZeroAdder) = a
@@ -22,7 +23,6 @@ include("cls.jl")
 include("det.jl")
 include("inv.jl")
 include("lneq.jl")
-include("lp.jl")
 include("lp.jl")
 include("sdp.jl")
 include("lu.jl")

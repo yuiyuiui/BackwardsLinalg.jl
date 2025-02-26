@@ -4,6 +4,7 @@ function lneq(A::Matrix{T},b::Vector{T}) where T<:Number
     return A \ b
 end
 
+
 function lneq_back(A::Matrix{T},b::Vector{T},x,x̄) where T
     Q,R = LinearAlgebra.qr(A)
     b̄ = Q*(R')^(-1)*x̄

@@ -28,9 +28,9 @@ expmv                          |
 
 norm matrix analytic function  |          complex        done     
 
-Cholesky decomposition         |           complex       done
+Cholesky decomposition         |          complex        done
 
-LP                             |
+LP                             |          complex        done 
 
 SDP                            |
 

@@ -13,6 +13,7 @@ function gradient_check(f, args...; η = 1e-5)
 end
 
 @testset "lu" begin
+    Random.seed!(3)
     T = ComplexF64
     M =5
     A = rand(T,M,M)

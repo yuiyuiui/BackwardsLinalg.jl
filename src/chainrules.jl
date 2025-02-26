@@ -133,7 +133,7 @@ end
 function rrule(::typeof(lu), A)
 	x = lu(A)
 	function pullback(dy)
-		Ā = @thunk lu_back(A, unthunk(dy)...)
+		Ā = @thunk lu_back(A, unthunk.(dy)...)
 		return (NoTangent(), Ā)
 	end
 	return x, pullback
@@ -147,4 +147,15 @@ function rrule(::typeof(norm_anlfunc), f, df, A)
 	end
 	return B, pullback
 end
+
+function rrule(::typeof(lp),c,A,b)
+	x,a = lp(c,A,b)
+	function pullback(ȳ)
+		c̄, Ā, b̄ = @thunk lp_back(c,A,b,x,unthunk.(ȳ)...)
+		return (NoTangent(), c̄, Ā, b̄)
+	end
+	return (x,a), pullback
+end
+
+
 
