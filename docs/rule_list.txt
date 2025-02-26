@@ -10,7 +10,9 @@ qr                             |
 
 symeigen / nromal eigen        |         complex         done
 
-svd                            |
+svd                            |         complex         done
+
+rsvd                           |         complex       Does it make sense ???
 
 schatten norm                  |          complex        done
 

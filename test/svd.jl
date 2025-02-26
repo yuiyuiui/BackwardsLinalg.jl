@@ -1,7 +1,7 @@
 using Test
 using BackwardsLinalg
 using LinearAlgebra: Diagonal
-using Random
+using Random, Zygote
 
 function gradient_check(f, args...; η = 1e-5)
     g = gradient(f, args...)
