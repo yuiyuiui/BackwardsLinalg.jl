@@ -160,7 +160,8 @@ $
 Besides, it's easy to prove such $R^r$ in unique.
 
 = Eigenvalue decomposition <eigenvalue-decomposition>
-DONE
+This adjoint formula of hermite imput is just the adjoint formula for normal matrices input.
+
 
 = Singular value decomposition <singular-value-decomposition>
 
@@ -392,11 +393,11 @@ $
 
   &T r(overline(U)^(dagger)delta U + overline(S)^(dagger)delta S+h.c.) = T r(overline(B)^(dagger)delta B +h.c.)\
   &= T r(overline(B)^(dagger)(delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger) + U f(S) delta U^(dagger))+h.c.)\
-  & T r(overline(B)^(dagger)(delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger)) + delta U f(S)^(dagger)U^(dagger) + h.c. )\
+  & T r(overline(B)^(dagger)(delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger)) + delta U f(S)^(dagger)U^(dagger)overline(B) + h.c. )\
 
   & arrow \
   & overline(U)=overline(B)U f(S)^(dagger)+overline(B)^(dagger)U f(S)\
-  & overline(S)=f'(S)^(dagger)U^(dagger)overline(B)
+  & overline(S)=[f'(S)^(dagger) U^(dagger) overline(B) U] compose I
 $
 
 = Cholesky decomposition

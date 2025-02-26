@@ -8,7 +8,7 @@ least sq / arg least sq        |        complex          done
 
 qr                             |
 
-symeigen                       |          
+symeigen / nromal eigen        |         complex         done
 
 svd                            |
 
@@ -24,7 +24,7 @@ linear equations               |          compelex       done
 
 expmv                          |
 
-norm matrix analytic function  |
+norm matrix analytic function  |          complex        done     
 
 Cholesky decomposition         |           complex       done
 
