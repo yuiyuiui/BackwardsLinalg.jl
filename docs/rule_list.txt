@@ -30,7 +30,7 @@ norm matrix analytic function  |          complex        done
 
 Cholesky decomposition         |          complex        done
 
-LP                             |          complex        done 
+LP                             |           real          done 
 
 SDP                            |
 

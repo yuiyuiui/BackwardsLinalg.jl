@@ -148,13 +148,22 @@ function rrule(::typeof(norm_anlfunc), f, df, A)
 	return B, pullback
 end
 
-function rrule(::typeof(lp),c,A,b)
-	x,a = lp(c,A,b)
+function rrule(::typeof(lp), c, A, b)
+	x, a = lp(c, A, b)
 	function pullback(ȳ)
-		c̄, Ā, b̄ = @thunk lp_back(c,A,b,x,unthunk.(ȳ)...)
+		c̄, Ā, b̄ = @thunk lp_back(c, A, b, x, unthunk.(ȳ)...)
 		return (NoTangent(), c̄, Ā, b̄)
 	end
-	return (x,a), pullback
+	return (x, a), pullback
+end
+
+function rrule(::typeof(gmres), A, b; args...)
+	x = gmres(A, b; args...)
+	function pulllback(x̄)
+		Ā, b̄ = @thunk gmres_back(A, b, unthunk(x̄); args...)
+		return (NoTangent(), Ā, b̄)
+	end
+	return x, pulllback
 end
 
 
