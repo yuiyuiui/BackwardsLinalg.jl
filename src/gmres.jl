@@ -64,7 +64,7 @@ function gmres_back(A::Matrix{T}, b::Vector{T}, x̄::Vector; x0 = zeros(T, size(
 		x0 = [real.(x0); imag.(x0)]
 		k = my_gmres(A1, b1;x0 = x0)[2]
 	elseif T<: Real
-		k = gmres(A, b; x0 = x0)[2]
+		k = my_gmres(A, b; x0 = x0)[2]
 	end
 	e1 = zeros(k + 1)
 	e1[1] = 1.0
