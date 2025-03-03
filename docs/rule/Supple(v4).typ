@@ -571,4 +571,80 @@ $
 $
 
 
+= GMRES
 
+#rulebox([
+Usual GMRES only works well for Diagonally Dominant Matrix. For rand(T, n, n) it can't even get a precise solution. I only give an adjoint 
+for usual real and complex GMRES. It reminds to be improved.
+
+For a large scale $A \in CC^(m times n), b in CC^m$, and fixed error $epsilon$ and initial guess $x_0$. Denote $r_0 = b - A x_0$, then we want find
+$
+  x in x_0 + s p a n (r_0,A r_0,..,A^(k-1)r_0) quad s.t. quad x = arg min ||b-A x||
+$
+
+We realize it by solve:
+$
+  y = arg l s t s q(H_k,||r_0||e_1).
+$
+
+$H_k$ comes from Schmidt Orthogonalization process:
+$
+  &W_k = [r_0,..,A^(k-1)r_0] arrow V_k\
+  &A V_k = V_(k+1)H_k
+$
+Here $V_k$ is an orthonormal basis derived from $W_k$ using the Gram-Schmidt orthogonalization process.
+
+Care that $m != n$ mean even the origin equation doesn't have a solution or its solutions are not unique, we can still get an approximate solution or one solution by GMRES.
+
+
+],
+[
+  Given itereation times $k$ we can do this (denote is as: GK_GMRES, G G for short) to replece usual GMRES:
+  $
+    &(1) A, b arrow r_0\
+    &(2) A, r_0 arrow W = [r_0,..,A^k r_0]\
+    &(3) W arrow Q,R = q r(W)\
+    &(4) A, Q arrow H = Q'A Q[:,1:k]\
+    &(4.5) H = H compose M\
+    &(5) H, R arrow y = arg l s t s q (H, R[1,1]e_1)\
+    &(6) x = x_0 + Q[:,1:k]y
+  $
+
+  Here $M$ is a mask matrix that:
+  $
+    &M = (c_(i j))_((k+1)times k), quad c_(i j) = 0 , i <=j-2\
+    &c_(i j) = 1 quad f o r quad o t h e r s  
+  $
+  (4.5) is to make sure places in $H$ that $i<=j-2$ is $0$. Then it's adjoint:
+
+  (1) Real:
+
+  $
+    & overline(A) = j a c(G G, A, b)[1]'overline(x)\
+    & overline(b) = j a c(G G, A, b)[2]'overline(x)\
+  $
+  $j a c()$ means jacobian.
+
+  (2) Complex:
+  Denote:
+  $
+    &A = A_r + im A_i\
+    &b = b_r + im b_i\
+    &J A_r, J A_i, J b_r, J b_i = j a c(G G, [A_r,-A_i;A_i,A_r], [b_r;b_i])
+  $
+  Then:
+  $
+    &overline(A) = (J A_r' + im J A_i')overline(x)\
+    &overline(b) = (J b_r' + im J b_i')overline(x)\
+  $
+
+])
+
+Proof : In usual GMRES, $V_k$ is an orthonormal basis of $s p a n(W_k)$. QR decomposition do the same process.  $q r(W_k).Q$ is also an orthonormal basis of $s p a n(W_k)$. So we can replace original $H_k$ by:
+$
+  H_k = Q'A Q[:,1:k].
+$
+Then do the same derivation process of usual GMRES, we get
+$
+  &y = arg l s t s q (H,R[1,1]e_1).
+$
