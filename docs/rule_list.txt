@@ -36,5 +36,5 @@ SDP                            |
 
 GMRES                          |          complex        done
 
-Pfafain                        | 
+Pfaffain                        | 
 

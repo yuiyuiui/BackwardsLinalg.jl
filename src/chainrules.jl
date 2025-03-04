@@ -167,4 +167,13 @@ function rrule(::typeof(gmres), A, b; args...)
 end
 
 
+function rrule(::typeof(pf), A)
+	pfA = pf(A)
+	function pulllback(ā)
+		Ā = @thunk pf_back(A, pfA, unthunk(ā))
+		return (NoTangent(), Ā)
+	end
+	return pfA, pulllback
+end
+
 

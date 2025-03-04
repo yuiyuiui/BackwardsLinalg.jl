@@ -648,3 +648,28 @@ Then do the same derivation process of usual GMRES, we get
 $
   &y = arg l s t s q (H,R[1,1]e_1).
 $
+
+= Pfaffian
+#rulebox([
+
+For $A in RR^(2n times 2n)$ and $A + A^T =0$:
+$
+  &P f(A)=1/(2^n n!) sum_(sigma in S_(2n)) s g n(sigma)product_(i=1)^n A_(sigma(2i-1),sigma(2i))
+$
+
+],
+[
+  Denote $P f(A)$ as $a$, then:
+$
+  &overline(A) = -(overline(a) A^(a d))/(2 a)
+$
+])
+
+Proof: 
+$
+  &P f(A)^2 = det(A)\
+  &arrow 2 P f(A) tr(((partial a)/(partial A))^T delta A ) = tr(A^(a d)delta A)\
+  & arrow 2a ((partial a)/ (partial A))^T =  A^(a d)\
+  & arrow overline(A) = overline(a) (partial a)/ (partial A) = -(overline(a) A^(a d))/(2 a)
+$
+Q.E.D.
