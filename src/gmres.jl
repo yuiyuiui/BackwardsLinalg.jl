@@ -1,4 +1,4 @@
-function my_gmres(A, b; maxiter = size(A, 2), abstol = 1e-4, reltol = 1e-4, x0 = zeros(length(b)))
+function my_gmres(A, b; maxiter = size(A, 2), abstol = 1e-5, reltol = 1e-5, x0 = zeros(length(b)))
 	n = length(b)
 	x = copy(x0)
 	r = b - A * x
@@ -41,7 +41,7 @@ function my_gmres(A, b; maxiter = size(A, 2), abstol = 1e-4, reltol = 1e-4, x0 =
 		k = maxiter
 	end
 
-    H = H0[1:k+1,1:k]
+	H = H0[1:k+1, 1:k]
 
 	return x, k, H
 end
@@ -58,17 +58,25 @@ function gmres(A::Matrix{T}, b::Vector{T}; x0 = zeros(T, size(A, 2))) where T <:
 end
 
 function gmres_back(A::Matrix{T}, b::Vector{T}, x̄::Vector; x0 = zeros(T, size(A, 2))) where T <: Number
+	
+	x = gmres(A,b)
+	if LinearAlgebra.norm(A*x-b)<1e-2
+		return gmres_back_lneq(A ,b, x, x̄; x0 = x0)
+	end
+
+	
+
+	m, n = size(A)
 	if T <: Complex
 		A1 = [real.(A)  -imag.(A); imag.(A) real.(A)]
 		b1 = [real.(b); imag.(b)]
 		x0 = [real.(x0); imag.(x0)]
-		k = my_gmres(A1, b1;x0 = x0)[2]
-	elseif T<: Real
+		k = my_gmres(A1, b1; x0 = x0)[2]
+	elseif T <: Real
 		k = my_gmres(A, b; x0 = x0)[2]
 	end
 	e1 = zeros(k + 1)
 	e1[1] = 1.0
-	m, n = size(A)
 	mask = ones(k + 1, k)
 	for j ∈ 1:k
 		for i ∈ j+2:k+1
@@ -78,10 +86,10 @@ function gmres_back(A::Matrix{T}, b::Vector{T}, x̄::Vector; x0 = zeros(T, size(
 	function _gmres(A, b)
 		r0 = b - A * x0
 		W = hcat([A^(i - 1) * r0 for i in 1:k+1]...)
-		Q, R= BackwardsLinalg.qr(W)
+		Q, R = BackwardsLinalg.qr(W)
 		H0 = Q' * A * Q[:, 1:k]
 		H = H0 .* mask
-		r0e = R[1,1] * e1
+		r0e = R[1, 1] * e1
 		y = BackwardsLinalg.arg_lstsq(H, r0e)
 		x = x0 + Q[:, 1:k] * y
 		return x
@@ -103,3 +111,9 @@ function gmres_back(A::Matrix{T}, b::Vector{T}, x̄::Vector; x0 = zeros(T, size(
 
 	return Ā, b̄
 end
+
+function gmres_back_lneq(A::Matrix{T}, b::Vector{T}, x::Vector{T}, x̄::Vector; x0 = zeros(T, size(A, 2))) where T <: Number
+	b̄ = gmres(Matrix(A'), x̄)
+	return -b̄ * x', b̄
+end
+

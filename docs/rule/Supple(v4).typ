@@ -319,22 +319,22 @@ $
 = Linear equations
 #rulebox([
  $
-   & A in CC^(m times n), det A'A !=0, b in RR^m\
+   & A in CC^(n times n), det A !=0, b in RR^n\
    & A,b arrow x: A x =b
  $
 ],
 [
 $
-&overline(b) = Q R^(- dagger) overline(x)\
-&overline(A) = (b - A x)overline(x)^(dagger) R^(-1)R^(-dagger) -   Q R^(-dagger)overline(x) x^(dagger)
+& overline(A) = -A^(-dagger)overline(x)x^(dagger)\
+&overline(b)=A^(-dagger)overline(x)\
 $
-Where $A=Q R$ is the QR decomposition.
 ])
 Proof: 
 $
   &b= A^(-1)b\
-  & arrow overline(A^(-1)) = overline(x)b^(dagger) = - A^(dagger)overline(A)A^(dagger) arrow overline(A) = -A^(-dagger)overline(x)b^(dagger)A^(-dagger)\
-  &overline(b)=A^(dagger)overline(x)\
+  & arrow overline(A^(-1)) = overline(x)b^(dagger) = - A^(dagger)overline(A)A^(dagger) \
+  &arrow overline(A) = -A^(-dagger)overline(x)b^(dagger)A^(-dagger) = -A^(-dagger)overline(x)x^(dagger)\
+  &overline(b)=A^(-dagger)overline(x)\
 $
 
 

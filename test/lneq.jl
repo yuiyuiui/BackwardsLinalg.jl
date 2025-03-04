@@ -16,10 +16,10 @@ end
 @testset "lneq" begin
 	T = ComplexF64
 	Random.seed!(3)
-	M, N = 10, 5
-	A = randn(T, M, N)
+	M = 10
+	A = randn(T, M, M)
 	b = randn(T, M)
-	op = randn(T, N, N)
+	op = randn(T, M, M)
 	op += op'
 
 	function tfunc(A, b)

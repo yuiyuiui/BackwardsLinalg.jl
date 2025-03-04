@@ -1,15 +1,13 @@
-function lneq(A::Matrix{T},b::Vector{T}) where T<:Number
-    A1=A'*A
-    @assert LinearAlgebra.det(A1)!=0
-    return A \ b
+function lneq(A::Matrix{T}, b::Vector{T}) where T <: Number
+	@assert LinearAlgebra.det(A) != 0
+	return A \ b
 end
 
 
-function lneq_back(A::Matrix{T},b::Vector{T},x,x̄) where T
-    Q,R = LinearAlgebra.qr(A)
-    b̄ = Q*(R')^(-1)*x̄
-    Ā = (b-A*x)*x̄'*(R'*R)^(-1) -Q*(R')^(-1)*x̄*x'
-    return Ā,b̄
+function lneq_back(A::Matrix{T}, b::Vector{T}, x, x̄) where T
+	b̄ = (A')^(-1) * x̄
+	Ā = - (A')^(-1) * x̄ * x'
+	return Ā, b̄
 end
 
 

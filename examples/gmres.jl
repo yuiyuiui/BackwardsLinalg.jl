@@ -1,16 +1,16 @@
 using Zygote, LinearAlgebra, BackwardsLinalg, Random
 
 
-T = ComplexF64
+T = Float64
 Random.seed!(3)
-n = 100
-A = rand(T, n, n) + n * I
+n = 200
+A = rand(T, n, n) + n/64 * I
 b = rand(T, n)
 
 x= BackwardsLinalg.gmres(A, b)
 norm(A*x-b)
 x̄ = rand(T ,n)
-BackwardsLinalg.gmres_back(A, b, x̄)[2]
+BackwardsLinalg.my_gmres(A,b)[2]
 
 # ========
 
