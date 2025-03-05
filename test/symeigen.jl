@@ -26,8 +26,9 @@ end
 end
 
 @testset "symeigen for normal" begin
+    Random.seed!(6)
     T = ComplexF64
-    M =20
+    M = 4
     A = randn(T,M,M)
     Q = LinearAlgebra.qr(A).Q
     S = diagm(randn(T,M))

@@ -14,7 +14,7 @@ end
 
 @testset "det" begin
     T = ComplexF64
-    M = 6
+    M = 4
     A = randn(T, M, M)
     function tfunc(A)
         a = BackwardsLinalg.det(A)

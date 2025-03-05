@@ -1,5 +1,5 @@
-using BackwardsLinalg
-using Random
+using BackwardsLinalg,LinearAlgebra
+using Random, Zygote
 using Test
 
 function gradient_check(f, args...; η = 1e-5)
@@ -47,3 +47,7 @@ end
     @test gradient_check(f, A)
     @test gradient_check(g, A)
 end
+
+
+
+

@@ -4,15 +4,15 @@ matrix multiplication          |        complex          done
 
 tensor network                 |
 
-least sq / arg least sq        |        complex          done
+least sq / arg least sq        |         complex         done
 
-qr                             |
+qr (all size)                  |         complex         done
 
 symeigen / nromal eigen        |         complex         done
 
 svd                            |         complex         done
 
-rsvd                           |         complex       Does it make sense ???
+rsvd                           |         complex     done but to improve
 
 schatten norm                  |          complex        done
 
@@ -36,5 +36,5 @@ SDP                            |
 
 GMRES                          |          complex        done
 
-Pfaffain                        | 
+Pfaffain                       |           real          done
 

@@ -279,77 +279,97 @@ $
 Since $delta A_(V_a)$ and $delta B_(V_b)$ are arbitrary, the above equation immediately implies @eq:einback.
 
 == The least square problem <least-square-problem>
-#jinguo([complex valued version needs to be added.])
+Complex Version
 #rulebox([
-The real valued least square problem in the matrix form:
+
+(1)
+$ 
+&A in CC^(m times n) , r a n k(A) =  n, b in CC^m \  
+&(A,b) arrow x in CC^n = arg min ||A x-b||
 $
-min_x ||A x - b||^2,
+
+(2)
 $
-where $A in bb(R)^(m times n)$ and $b in bb(R)^m$ with $m > n$ are inputs, $x$ is the output.
+  &A in CC^(m times n) , b in CC^m \  
+ &(A,b) arrow a in RR = min ||A x-b||\
+ & arrow a = b^(dagger) (I -U U^(dagger))b
+$
+
+Here $U = s v d(A).U$
 ],
 [
+
+(1)
 $
-&overline(b) = Q R(R^T R)^(-1) overline(x) = Q (R^T)^(-1) overline(x)\
-&overline(A) = (b - A x)overline(x)^T R^(-1)(R^T)^(-1) -   Q(R^T)^(-1) overline(x) x^T
+&overline(b) = Q R^(- dagger) overline(x)\
+&overline(A) = (b - A x)overline(x)^(dagger) R^(-1)R^(-dagger) -   Q R^(-dagger)overline(x) x^(dagger)
 $
+Where $A=Q R$ is the QR decomposition.
+
+(2)
+$
+  & overline(b) = 2overline(a)(I - U U^(dagger))b\
+  & overline(U) = -2overline(a)b b^(dagger)U\
+$
+
+Use svd_back to get $overline(A)$ from $overline(U)$
 ])
+Proof:
+(1)
+$
+&||A X-b||^2=(A X-b)^(dagger) (A X-b) \
 
-The solution of the least square problem is given by:
-$
-x = (A^T A)^(-1) A^T b quad "or" quad (A^T A)x = A^T b.
-$ <eq:lsq_sol>
-Note that this defining equation is usually not how we compute the solution. In practice, we use the QR decomposition to compute the solution.
-
-Let us denote the adjoint of a variable $v$ as $overline(v) "s.t." delta cal(L) = overline(v) delta v$, where $cal(L)$ is a hypothetical loss function.
-Since we have the mapping $(A, b) arrow.r x$, we have the following differential relation:
-$
-  delta cal(L) = tr(overline(x)^T delta x) = tr(overline(A)^T delta A) + tr(overline(b)^T delta b).
-$ <eq:lsq_diff>
-The *goal* is to find $overline(A)$ and $overline(b)$ given $overline(x)$.
-
-By considering @eq:lsq_sol, we also have:
-$
-(A^T + delta A^T) (A + delta A) (x + delta x) = (A^T + delta A^T) (b + delta b).
-$
-Keeping only the first order terms, we have:
-$
-&delta A^T A x + A^T delta A x + A^T A delta x = A^T delta b + delta A^T b\
-arrow.double.r &delta x = (A^T A)^(-1) (A^T delta b + delta A^T b - delta A^T A x - A^T delta A x).
-$
-Inserting the above into the differential relation @eq:lsq_diff, we have:
-$
-  &tr(overline(x)^T (A^T A)^(-1) (A^T delta b + delta A^T b - delta A^T A x - A^T delta A x)) = tr(overline(A)^T delta A) + tr(overline(b)^T delta b)\
-  = &tr(overline(x)^T (A^T A)^(-1)A^T delta b) + tr(overline(x)^T (A^T A)^(-1) delta A^T (b - A x) - overline(x)^T (A^T A)^(-1) A^T delta A x)\
-  = &tr(overline(x)^T (A^T A)^(-1)A^T delta b) + tr((b - A x)^T delta A (A^T A)^(-1) overline(x) - overline(x)^T (A^T A)^(-1) A^T delta A x)\
-  = &tr(overline(x)^T (A^T A)^(-1)A^T delta b) + tr((A^T A)^(-1)overline(x)(b - A x)^T delta A  - x overline(x)^T (A^T A)^(-1) A^T delta A)
-$
-where we have used the following relations
-- $tr(A B C) = tr(B C A) = tr(C A B)$
-- $tr(X) = tr(X^T)$
-
-Since $delta b$ and $delta A$ are arbitrary, we have:
-$
-&overline(b) = A (A^T A)^(-1) overline(x)\
-&overline(A) = (b - A x)overline(x)^T (A^T A)^(-1) -   A (A^T A)^(-1) overline(x) x^T
+&min ||A X-b||^2 arrow A^(dagger)A x=A^(dagger)b
 $
 
-Let $A = Q R$ be the QR decomposition of $A$, where $Q in bb(R)^(m times n)$ is an orthogonal matrix ($Q^T Q = bb(I)$) and $R in bb(R)^(n times n)$ is an *invertible* upper triangular matrix. We have:
+And do derivative on both sides of the above formula, we get
 $
-&overline(b) = Q R(R^T R)^(-1) overline(x) = Q (R^T)^(-1) overline(x)\
-&overline(A) = (b - A x)overline(x)^T R^(-1)(R^T)^(-1) -   Q(R^T)^(-1) overline(x) x^T
+  & delta A^(dagger)A X +A^(dagger) delta A X + A^(dagger)A delta x = delta A^(dagger)b+A^(dagger)delta b \
+  &delta x =(A^(dagger)A)^(-1)(delta A^(dagger)b+A^(dagger)delta b-delta A^(dagger)A x-A^(dagger)delta A x)
 $
 
-=== How to compute the adjoint
-From computational perspective, we
-1. obtain $y = (R^T)^(-1) overline(x)$ by solving the linear system $R^T y = overline(x)$, then we have:
-  $
-  &overline(b) = Q y\
-  &overline(A) = (b - A x)y^T (R^T)^(-1) -   overline(b) x^T
-  $
-2. obtain $z = (R)^(-1) y$ by solving the linear system $R z = y$, then we have:
-  $
-  &overline(A) = (b - A x)z^T -   overline(b) x^T
-  $
+And according to the complex derivative rules:
+$
+  &delta L=1/2 T r(overline(A)^(dagger)delta A + overline(b)^(dagger)delta b+h.c.)\
+  & =1/2 T r(overline(x)^(dagger)delta x+h.c.) 
+$
+
+Then we get 
+$
+  &2delta L=T r(overline(x)^(dagger)(A^(dagger)A)^(-1)(delta A^(dagger)b+A^(dagger) delta b-delta A^(dagger)A x-A^(dagger)delta A x)+h.c.)\
+
+  &=T r(overline(x)^(dagger)(A^(dagger)A)^(-1)(A^(dagger)delta b-A^(dagger)delta A x)+(b^(dagger)delta A -x^(dagger)A^(dagger)delta A)(A^(dagger)A)^(-1)overline(x)+h.c.)\
+
+  & arrow overline(A) = -A(A^(dagger)A)^(-1)overline(x)x^(dagger) + (b-A x)overline(x)^(dagger)(A^(dagger)A)^(-1)\
+  & =(b - A x)overline(x)^(dagger) R^(-1)R^(-dagger) -   Q R^(-dagger)overline(x) x^(dagger)\
+
+  &overline(b)=overline(x)^(dagger)(A^(dagger)A)^(-1)A^(dagger)\
+  &=Q R^(- dagger) overline(x)
+$
+
+
+(2)
+$
+  & A^(dagger)A x = A^(dagger)b, quad a = (A x-b)^(dagger)(A x-b)\
+  & arrow S V^(dagger) x = U^(dagger)b\
+  & arrow  a = b^(dagger)(b - A x) = b^(dagger)(b - U S V^(dagger)x) \
+  & = b^(dagger) (I - U U^dagger) b\
+$
+
+Then 
+$
+  &delta a = delta b^dagger (I - U U^dagger)b +b^(dagger)(-delta U U^dagger)b + b^dagger (-U delta U^dagger)b = b^dagger (I - U U^dagger) delta b
+$
+
+Plug it and we get:
+$
+  & tr(overline(b)^dagger delta b + overline(U)^dagger delta U +h.c.) = 2tr(overline(a)delta a)\
+  & = 2overline(a) tr(b^dagger (I-U U^dagger) delta b - U^dagger b b^dagger delta U +h.c.)\
+  & arrow overline(b)^dagger = b^dagger (I-U U^dagger), quad overline(U)^dagger = - U^dagger b b^dagger\
+  & overline(b) = 2overline(a)(I-U U^dagger)b, quad overline(U) = -2overline(a) b b^dagger U\
+$
+
+
 
 == QR decomposition <qr-decomposition>
 #jinguo([with pivoting? thin and wide QR?])
@@ -603,15 +623,475 @@ which is exactly the same as @eq:svd_loss_diff_full.
 
 
 
-== Dominant eigenvalue@Xie2020
+== Schatten norm
+#rulebox([
+$ 
+&A in CC^(m times n) \
+&||A||_p=(sum_i lambda_i^p)^(1/p) , 1<= p< infinity\
+&||A||_(infinity) = max_i lambda_i 
+$
+Denote $||A||_p$ as $a>= 0$.\
+${lambda_i}$ are the singular values of $A$
+],
+[
+$
+& overline(A)= overline(a)a^(1-p)U S^(p-1) V^(dagger), 1<=p<infinity\
+& overline(A) =overline(a)u_1 v_1^(dagger),   p=infinity
+
+$
+Where $U,S,V= s v d(A)$ and $u_1,v_1$ are respectively the first columns of $U$ and $V$.
+
+When p=2, $||A||_2=||A||_F$ 
+])
+
+Proof: (1) 1<=p < infinity
+$
+A arrow S arrow a
+$
+
+Denote $S=d i a g(lambda_1,..,lambda_n)$, then
+$
+  &a=(sum_(i=1)^n=lambda_i^(p))^(1/p)\
+  &arrow delta a = T r(a^(1-p)S^(p-1)delta S)\
+  &arrow delta=T r(overline(a)delta a) = T r(overline(a)a^(1-p)S^(p-1)delta S) =T r(overline(S)delta S)\
+  &arrow overline(S)=overline(a)a^(1-p)S^(p-1)\
+$
+
+And with adjoint formula of complex-value SVD, we get
+$
+  &overline(A)=U overline(S)V^(dagger)=overline(a)a^(1-p)U S^(p-1) V^(dagger)
+$
+
+(2) When $p=infinity$
+
+Because singular values in $S$ got by svd() is descending order, 
+$
+  &a=lambda_1\
+  &arrow delta a =T r (E_(11)delta S )\
+  &arrow T r(overline(a)E_(11)delta S) = T r (overline(S)delta S)\
+  &arrow overline(S)=overline(a)E_(11)\
+  &arrow overline(A)=U overline(S) V^(dagger)=overline(a)u_1v_1^(dagger)
+$
 
 == Matrix inversion <matrix-inversion>
+#rulebox([
+$ 
+A in CC^(n times n),det A !=0\
+A->A^(-1)
+$
+],
+[
+  Denote $A^(-1)$ as $B$, then:
+$
+& overline(A)=-B^(dagger)overline(B)B^(dagger)
+$
+])
+
+Proof: 
+$
+  &B A=I\
+  &arrow delta B A+A delta B=0\
+  &arrow delta A=-A delta B A\
+  &arrow T r(-A overline(A)^(dagger)A delta B+h.c.) = T r(overline(B)^(dagger)delta B+h.c.)\
+  &arrow overline(B)^(dagger)=-A overline(A)^(dagger)A \
+  & arrow overline(A)=-B^(dagger)overline(B)B^(dagger)
+$
 
 == Matrix determinant <matrix-determinant>
+#rulebox([
+$ 
+A in CC^(n times n),det A !=0\
+A->a = det A
+$
+],
+[
+  Denote the adjoint matrix of $A$ as $A^(a d)$:
+$
+& overline(A)=overline(a)A^(a d dagger)
+$
+])
+Proof: 
+$
+  &delta a=T r(A^(a d )delta A)\
+  &arrow 2delta L=T r(overline(a)^* delta a +h.c.)=T r(overline(A)^(dagger)delta A+h.c.)\
+  &=T r(overline(a)^* A^(a d )delta A +h.c.)\
+  &arrow overline(A)=overline(a)A^(a d dagger)
+
+$
 
 == LU decomposition <lu-decomposition>
+In some numerical package, the input matrix $A$ will be multiplied with a rows permutation matrix $P$ so that the LU decomposition of $P A$ exists. $A arrow P$ is not a map so we can't just caonsider 
+$
+  A arrow P L U
+$
 
-== Matrix exponential <matrix-exponential>
+We only condider matrice that have LU decomposition. For those who can't, we have to get the $P$ and
+$ A arrow P A arrow L U(P A) $
+
+Now $A = P overline(P A)$.
+
+#rulebox([
+ 
+$A$ in $CC^(n times n)$ and can do LU decomposition.
+$
+  & A arrow L,U:L U
+$
+$L$ is a lower triangular matrix with all $1$ on its diagonal. $U$ is a upper triangular matrix.
+],
+[
+$
+  overline(A) = P L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
+$
+$K$ is an upper triangular matrix with with all 1 . $J=o n e s-K$
+])
+
+Proof: First we consider $A =L U$:
+$
+  &A=L U\
+  & arrow delta A = delta L U + L delta U\
+  & arrow L^(-1)delta A U^(-1) = L^(-1) delta L +delta U U^(-1),quad delta U =L^(-1)(delta A-delta L U)
+$
+Because $delta U U^(-1)$ is upper triangle and $L^(-1)delta L$ lower triangle with 0 on diagonal,
+$
+  &L^(-1)delta L = J compose L^(-1)delta A U^(-1)\
+$
+Then:
+$
+  &T r (overline(A)^(dagger)delta A + h.c.)= T r (overline(L)^(dagger)delta L+ overline(U)^(dagger)delta U +h.c.)\
+  &=T r(overline(L)^(dagger)delta L + overline(U)^(dagger)L^(-1)(delta A-delta L U)+h.c.)\
+  &=T r(overline(U)^(dagger)L^(-1)delta A +(overline(L)^(dagger)L-U overline(U)^(dagger))L^(-1)delta L +h.c.)\
+  &=T r(overline(U)^(dagger)L^(-1)delta A +(overline(L)^(dagger)L-U overline(U)^(dagger))(J compose L^(-1)delta A U^(-1))+h.c.)\
+  & =T r(overline(U)^(dagger)L^(-1)delta A +U^(-1)  ((overline(L)^(dagger)L-U overline(U)^(dagger))compose J^T)  L^(-1)delta A+h.c.)\
+  & = T r (U^(-1)  ((overline(L)^(dagger)L-U overline(U)^(dagger))compose J^T + U overline(U)^(dagger))  L^(-1)delta A+h.c.)\
+  & = T r (U^(-1)  (overline(L)^(dagger)L compose J^T + U overline(U)^(dagger)compose K^T)  L^(-1)delta A+h.c.)\
+  & arrow overline(A) = L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
+$
+
+So for general $A$, we have :
+$
+  & overline(A) = P L^(-dagger)(overline(U)U^(dagger)compose K + L^(dagger)overline(L)compose J)U^(-dagger)
+$
+
+== Linear equations
+#rulebox([
+ $
+   & A in CC^(n times n), det A !=0, b in RR^n\
+   & A,b arrow x: A x =b
+ $
+],
+[
+$
+& overline(A) = -A^(-dagger)overline(x)x^(dagger)\
+&overline(b)=A^(-dagger)overline(x)\
+$
+])
+Proof: 
+$
+  &b= A^(-1)b\
+  & arrow overline(A^(-1)) = overline(x)b^(dagger) = - A^(dagger)overline(A)A^(dagger) \
+  &arrow overline(A) = -A^(-dagger)overline(x)b^(dagger)A^(-dagger) = -A^(-dagger)overline(x)x^(dagger)\
+  &overline(b)=A^(-dagger)overline(x)\
+$
+
+
+== Expmv
+
+== Analytic matrix function <matrix-exponential>
+
+For $A in CC^(n times n), f(z)=sum_(n=0)^(infinity) a_n z^n$ we define 
+$
+  &f(A)= sum_(i=1)^(infinity) a_n A^n
+$
+
+#rulebox([
+$ 
+A in CC^(n times n), A arrow B=f(A)
+$
+
+],
+[
+$
+  overline(A) =sum_(n=1)^(infinity)a_n^* sum_(k=0)^(n-1)A^(dagger k)overline(B)A^(dagger (n-k-1))
+$
+For the unclosed form of general $A$, we turn to normal $A in C^(n times n)$,then :
+$
+  &overline(A)=U(overline(S)+1/2 (overline(U)^(dagger)U compose F +h.c.))U^(dagger)\
+
+  & overline(U)=overline(B)U f(S)^(dagger)+overline(B)^(dagger)U f(S)\
+  & overline(S)=f'(S)^(dagger)U^(dagger)overline(B)
+$
+
+])
+
+Proof: 
+(1) For a general $A$,
+$
+  & B=f(A)=sum_(n=0)^(infinity)a_n A^n\
+  & delta B =sum_(n=1)a_n sum_(k=0)^(n-1)A^k delta A A^(n-1-k)
+$ 
+
+$
+  & T r(overline(B)^(dagger)delta B +h.c.) = T r(overline(A)^(dagger)delta A +h.c.)\
+
+  & = T r(overline(B)^(dagger)sum_(n=1)a_n sum_(k=0)^(n-1)A^k delta A A^(n-1-k) + h.c.)\
+  & = T r(overline(B)^(dagger)sum_(n=1)a_n sum_(k=0)^(n-1)A^k overline(B)^(dagger) A^(n-1-k) delta A + h.c.)
+$
+
+$
+  & arrow overline(A) =sum_(n=1)^(infinity)a_n^* sum_(k=0)^(n-1)A^(dagger k)overline(B)A^(dagger (n-k-1))
+$
+
+(2) For a normal $A$,
+$
+  &A arrow U,S: A = U S U^(dagger) arrow B=f(A) =U f(S) U^(dagger)\
+
+  &delta B = delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger) + U f(S) delta U^(dagger)\
+
+  &T r(overline(U)^(dagger)delta U + overline(S)^(dagger)delta S+h.c.) = T r(overline(B)^(dagger)delta B +h.c.)\
+  &= T r(overline(B)^(dagger)(delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger) + U f(S) delta U^(dagger))+h.c.)\
+  & T r(overline(B)^(dagger)(delta U f(S)U^(dagger) + U f'(S) delta S U^(dagger)) + delta U f(S)^(dagger)U^(dagger)overline(B) + h.c. )\
+
+  & arrow \
+  & overline(U)=overline(B)U f(S)^(dagger)+overline(B)^(dagger)U f(S)\
+  & overline(S)=[f'(S)^(dagger) U^(dagger) overline(B) U] compose I
+$
+
+== Cholesky decomposition
+#rulebox([
+ 
+For a Hermite matrix $A in CC^(n times n)$, if it's positive defined, it has unique decomposition of 
+$
+  A = L L^(dagger)
+$
+where $L$ is a lower triangular matrix with real numbers on the diagonal.
+],
+[
+  Denote $M$ as an upper triangle matrix with 0.5 on the diagonal and 1 for other nonzeros elements. Then: 
+  $
+   overline(A) = 1/2L^(-dagger)c o p y l t u(L^(dagger)overline(L))L^(-1)
+  $
+  Here, the function copyltu() means:
+  $
+    c o p y l t u(X) = X compose M^T +X^(dagger) compose M
+  $
+])
+Proof: 
+$
+  &A=L L^(dagger)\
+  &arrow delta A =delta L L^(dagger)+L delta L^(dagger)\
+  &arrow L^(-1)delta A L^(-dagger) = L^(-1)delta L+delta L^(dagger)L^(-dagger)\
+$
+Because $L^(-1)delta L$ is an upper triangle matrix and $L^(-1)delta L+(L^(-1)delta L)^(dagger)$ is a hermite matrix, we get:
+$
+  &delta L^(dagger)L^(-dagger) = (L^(-1)delta A L^(-dagger))compose M\
+  &delta L = (delta A-L delta L^(dagger))L^(-dagger)
+$
+
+Plug in $delta L$ we have:
+$
+  &2delta cal(L) = T r(overline(A)^(dagger)delta A+h.c.)=2T r(overline(A)delta A)=T r(overline(L)^(dagger)delta L+ overline(L)delta L^(dagger))\
+  &=T r(L^(-dagger)overline(L)^(dagger)delta A+(L^(dagger)overline(L)-overline(L)^(dagger)L)delta L^(dagger)L^(-dagger))\
+  & =T r(L^(-dagger)overline(L)^(dagger)delta A+(L^(dagger)overline(L)-overline(L)^(dagger)L) (L^(-1)delta A L^(-dagger)compose M))\
+  & =T r(L^(-dagger)overline(L)^(dagger)L L^(-1)delta A+L^(-dagger)((L^(dagger)overline(L)-overline(L)^(dagger)L)compose M^T)L^(-1)delta A)\
+  & =T r(L^(-dagger)(overline(L)^(dagger)L+(L^(dagger)overline(L)-overline(L)^(dagger)L)compose M^T )L^(-1)delta A)\
+  & = T r(  L^(-dagger)(  overline(L)^(dagger)L compose M + L^(dagger)overline(L)compose M^T  )L^(-1)delta A  )\
+  & = T r(L^(-dagger)c o p y l t u(L^(dagger)overline(L))L^(-1)delta A)\
+$
+
+$
+  arrow overline(A) = 1/2L^(-dagger)c o p y l t u(L^(dagger)overline(L))L^(-1)
+$
+
+
+
+== LP
+
+#rulebox([
+Assume $P$ is a standard linear programming that has a unique optimal solution, which is a nondegenerate basic feasible solution. Then :
+
+(Here the nondegenerate condition can be removed, but then we need more complex constraints and math proof. We now temporarily ignore this situation) 
+$ 
+& A in RR^(n times m), m>=n ,c in RR^m, b in RR^n\
+
+& min c^T x\
+& A x=b,x>=0
+
+$
+
+Denote its optimal solution is $x^0$ and the optimal value is $a$.
+
+],
+[
+Denote the basic matrix related to the basic feasible solution $x$ is $B$ and it related index set in $A$ is $M = {j_1<..<j_n}$. Denote
+$
+  &c_B = (c_(j_k))_(k=1)^n
+$
+So do $overline(c)_B,x_B,overline(x)_B$. Then:
+
+$
+  &overline(B) = B^(-T)overline(x)_B x_B^T\
+  &overline(b)=B^(-T)overline(x)_B\
+  &overline(A)=(overline(A)_j), quad overline(A)_j = overline(B)_k (j=j_k in M) quad o r quad 0 ( o t h e r s)\
+$
+and
+
+$
+  &overline(x)_B = overline(a) c_B\
+  &overline(c)_B = overline(a) x_B\
+  &overline(c) = (overline(c)_j), quad overline(c)_j=(overline(c)_B)_k (j=j_k in M) quad o r quad 0(o t h e r s)
+$
+Of course, beside $M$, elements of other indices in $overline(x)_B$ are all 0.
+])
+
+Proof : $B$ is a basic matrix, so $det B !=0$. If we use $delta$ represents a slight change (CARE : not derivative operator, but an enough samll real array). Then we still have $det (B + delta B)!=0$, so the solution of
+$
+  (B + delta B)(x_B+ delta x_B) = b + delta b
+$
+is also a basic solution.
+
+$x$ is nondegenerate $arrow x_B >0 arrow x_B+delta x_B >0$. So $x_B+delta x_B$ keeps a feasible nondegenerate solution.
+
+Denote indices set of nonbasic variables as $N$, then $overparen(c)_N>0$. Here $overparen(c)$ is the reduced cost. Otherwise, we get $j in N$ s.t. $overparen(c)_j=0$ and we can move $x$ toward $-B^(-1)A_j$ a slight $d>0$, then $c^T x = c^T (x-d B^(-1)A_j)$, conflict with the unique optimal solution. So we still have $overparen(c)_N+delta overparen(c)_N>0$ .
+
+Because $x_B+delta x_B$ is nondegenerate and $overparen(c)_N>0$, $x_B$ is still the unique optimal solution. 
+
+That is to say, when change $B,b,c$ slightly, the optimal solution $x$ keeps the unique optimal solution, basic ans nondegenerate, and is only related to $B=A_M,b$.
+
+$
+  &B x_B=b arrow delta B x_B +B delta x_B =delta b arrow delta x_B=B^(-1)(delta b-delta B x_B)\
+  &T r(overline(B)^T delta B+overline(b)^T delta b) = T r(overline(x)_B^T delta x_B) = T r(overline(x)_B^T B^(-1)(delta b-delta B x_B))\
+  & arrow overline(B) = B^(-T)overline(x)_B x_B^T,quad overline(b)=B^(-T)overline(x)_B
+$
+
+Similarly,arroding to above adjoint formula of $C=A B$, we get
+$
+  & a=c_B^T x_B \
+  & arrow overline(x)_B = overline(a) c_B,quad overline(c)_B = overline(a) x_B\
+$
+Q.E.D.
+ 
+== GMRES
+
+#rulebox([
+Usual GMRES only works well for Diagonally Dominant Matrix. For rand(T, n, n) it can't even get a precise solution. I only give an adjoint 
+for usual real and complex GMRES. It reminds to be improved.
+
+For a large scale $A \in CC^(m times n), b in CC^m$, and fixed error $epsilon$ and initial guess $x_0$. Denote $r_0 = b - A x_0$, then we want find
+$
+  x in x_0 + s p a n (r_0,A r_0,..,A^(k-1)r_0) quad s.t. quad x = arg min ||b-A x||
+$
+
+We realize it by solve:
+$
+  y = arg l s t s q(H_k,||r_0||e_1).
+$
+
+$H_k$ comes from Schmidt Orthogonalization process:
+$
+  &W_k = [r_0,..,A^(k-1)r_0] arrow V_k\
+  &A V_k = V_(k+1)H_k
+$
+Here $V_k$ is an orthonormal basis derived from $W_k$ using the Gram-Schmidt orthogonalization process.
+
+Care that $m != n$ mean even the origin equation doesn't have a solution or its solutions are not unique, we can still get an approximate solution or one solution by GMRES.
+
+
+],
+[
+
+  #strong[1. Exact AD rule:]
+
+  Given itereation times $k$ we can do this (denote is as: GK_GMRES, G G for short) to replece usual GMRES:
+  $
+    &(1) A, b arrow r_0\
+    &(2) A, r_0 arrow W = [r_0,..,A^k r_0]\
+    &(3) W arrow Q,R = q r(W)\
+    &(4) A, Q arrow H = Q'A Q[:,1:k]\
+    &(4.5) H = H compose M\
+    &(5) H, R arrow y = arg l s t s q (H, R[1,1]e_1)\
+    &(6) x = x_0 + Q[:,1:k]y
+  $
+
+  Here $M$ is a mask matrix that:
+  $
+    &M = (c_(i j))_((k+1)times k), quad c_(i j) = 0 , i <=j-2\
+    &c_(i j) = 1 quad f o r quad o t h e r s  
+  $
+  (4.5) is to make sure places in $H$ that $i<=j-2$ is $0$. Then it's adjoint:
+
+  (1) Real:
+
+  $
+    & overline(A) = j a c(G G, A, b)[1]'overline(x)\
+    & overline(b) = j a c(G G, A, b)[2]'overline(x)\
+  $
+  $j a c()$ means jacobian.
+
+  (2) Complex:
+  Denote:
+  $
+    &A = A_r + im A_i\
+    &b = b_r + im b_i\
+    &J A_r, J A_i, J b_r, J b_i = j a c(G G, [A_r,-A_i;A_i,A_r], [b_r;b_i])
+  $
+  Then:
+  $
+    &overline(A) = (J A_r' + im J A_i')overline(x)\
+    &overline(b) = (J b_r' + im J b_i')overline(x)\
+  $
+
+  #strong[2. Approximate AD rule:]
+
+  When $||A x - b||$ is small enough, we can approximately think $x$ is just the solution of $A x = b$ and thus we can use backrule of linear equations:
+  $
+    &overline(A) = -overline(b)x^(dagger)\
+    &overline(b)=A^(-dagger)overline(x)\
+  $
+
+  $overline(b)$ can be got by $overline(b) = g m r e s(A',overline(x))$, which is fast.
+
+
+  
+])
+
+Proof : In usual GMRES, $V_k$ is an orthonormal basis of $s p a n(W_k)$. QR decomposition do the same process.  $q r(W_k).Q$ is also an orthonormal basis of $s p a n(W_k)$. So we can replace original $H_k$ by:
+$
+  H_k = Q'A Q[:,1:k].
+$
+Then do the same derivation process of usual GMRES, we get
+$
+  &y = arg l s t s q (H,R[1,1]e_1).
+$
+
+== Pfaffian
+#rulebox([
+
+For $A in RR^(2n times 2n)$ and $A + A^T =0$:
+$
+  &P f(A)=1/(2^n n!) sum_(sigma in S_(2n)) s g n(sigma)product_(i=1)^n A_(sigma(2i-1),sigma(2i))
+$
+
+],
+[
+  Denote $P f(A)$ as $a$, then:
+$
+  &overline(A) = -(overline(a) A^(a d))/(2 a)
+$
+])
+
+Proof: 
+$
+  &P f(A)^2 = det(A)\
+  &arrow 2 P f(A) tr(((partial a)/(partial A))^T delta A ) = tr(A^(a d)delta A)\
+  & arrow 2a ((partial a)/ (partial A))^T =  A^(a d)\
+  & arrow overline(A) = overline(a) (partial a)/ (partial A) = -(overline(a) A^(a d))/(2 a)
+$
+Q.E.D.
+
+
+
+
+
 
 = Differentiating ordinary differential equations <differentiating-ordinary-differential-equations>
 

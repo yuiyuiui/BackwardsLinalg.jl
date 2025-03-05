@@ -118,3 +118,5 @@ println("目标函数值: ", min_value)
 println("最优解 X:")
 println(X_opt)
 println("迭代次数: ", iter)
+
+nextfloat(1.0)-1.0 == eps(Float64)

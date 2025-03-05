@@ -24,7 +24,12 @@ end
 
 
 function det_back(A,ā)
-    Aad = adjugate_matrix(A)
+    detA = LinearAlgebra.det(A)
+    if norm(detA)> 1e-12 
+        Aad = A^(-1)*LinearAlgebra.det(A)
+    else
+        Aad = adjugate_matrix(A)
+    end
     return ā*Aad'
 end
 
