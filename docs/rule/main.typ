@@ -172,6 +172,11 @@ $
 If we change $z$ by a small amount $delta z = delta x + i delta y$, the loss function $cal(L)$ will change by
 $ delta cal(L) = (overline(z)^* delta z + h.c.)\/2 = overline(x) delta x + overline(y) delta y. $
 
+== Domain of derivative <domain-of-derivative>
+The result of derivative is related to the Domain of the input. That is to say, giving a complex number $z$ with $i m a g(z) = 0$, $overline(z)$ with $l o s s : RR arrow RR$ is not equal to $overline(z)$ with $l o s s : CC  arrow CC$. So even if $a$ is always a real number, mathmatically, $overline(a)$ may be a complex number with non-zero imaginary part. To avoid ambiguity, when the domain of the derivative is unclear, we denote the derivative of $l o s s(z)$  with respect to $z$ defined on $D$ as $overline(z)_D$.
+
+It's easy to prove that 
+
 = Differentiating linear algebra operations <differentiating-linear-algebra-operations>
 
 
@@ -443,21 +448,69 @@ $
 
 Here, the $"copyltu"$ takes conjugate when copying elements to upper triangular part.
 
-== Eigenvalue decomposition for normal matrix <eigenvalue-decomposition-normal>
+== Eigenvalue decomposition for hermitian and normal matrix <eigenvalue-decomposition-normal>
 
 #rulebox([
-Eigenvalue decomposition for normal matrix
+  Eigenvalue decomposition for hermitian and normal matrix
 $ A = U E U^dagger, $
-where the input $A$ is a normal matrix, the outputs $U$ is a unitary matrix and $E$ is a diagonal matrix.
+  where the input $A$ is a hermitian or normal matrix, the outputs $U$ is a unitary matrix and $E$ is a diagonal matrix.
+
+
 ],
 [
+  (1) back rule for hermitian matrix eigenvalue decomposition
 $
-overline(A) = U[overline(E) + 1/2(overline(U)^dagger U compose F + "h.c.")]U^dagger
+overline(A) = U[overline(E)_RR + 1/2( U^dagger overline(U) compose F + "h.c.")]U^dagger
+$
+where $F_(i j)=(E_j - E_i)^(-1)$.
+
+(2) back rule for normal matrix eigenvalue decomposition
+$
+overline(A) = U[overline(E)_CC + 1/2( U^dagger overline(U) - overline(U)^dagger U)compose F^*]U^dagger
 $
 where $F_(i j)=(E_j - E_i)^(-1)$.
 ])
 
-#jinguo([To be added])
+Proof: For a nomral matrix $A$, we have $A = U E U^dagger$. Then we have:
+$
+  &delta A = delta U E U^dagger + U delta E U^dagger + U E delta U^dagger\
+  & arrow U^dagger delta A U = delta E + U^dagger delta U E + E delta U^dagger U\
+  & = delta E + U^dagger delta U E - E U^dagger delta U\
+  & = delta E + U^dagger delta U compose (E_j - E_i)_(n times n)\
+  & arrow delta E = U^dagger delta A U compose I,quad U^dagger delta U = U^dagger delta A U compose F\
+$
+So:
+$
+  &2delta L = tr[overline(A)^dagger delta A + h.c.] = tr[overline(U)^dagger delta U + overline(E)^dagger delta E  + h.c.]\
+  & = tr[overline(U)^dagger delta U + overline(U)delta U^dagger + overline(E)^dagger delta E + overline(E) delta E^dagger]\
+  & = tr[overline(U)^dagger delta U + overline(U) U^dagger U delta U^dagger + overline(E)^dagger delta E + overline(E) delta E^dagger]\
+  & = tr[overline(U)^dagger delta U - overline(U) U^dagger delta U U^dagger + overline(E)^dagger delta E + overline(E) delta E^dagger]\
+  & = tr[U^dagger (U overline(U)^dagger - overline(U) U^dagger)U  U^dagger delta U + overline(E)^dagger delta E + overline(E) delta E^dagger]\
+  & = tr[(overline(U)^dagger U - U^dagger overline(U))(U^dagger delta A U compose F) + overline(E)^dagger delta E + overline(E) delta E^dagger]\
+$
+
+If $A$ is hermitian, we have $delta E, overline(E) in RR^n$, then the above equation is equivalent to
+$
+  &=tr[U[-(overline(U)^dagger U - U^dagger overline(U))compose F]U^dagger delta A + 2overline(E)_RR delta E ]\
+  &=tr[U[(U^dagger overline(U) - overline(U)^dagger U)compose F]U^dagger delta A + 2overline(E)_RR (U^dagger delta A U compose I)) ]\
+  &=tr[U[(U^dagger overline(U) - overline(U)^dagger U)compose F + 2overline(E)_RR]U^dagger delta A]\
+  &=2tr[overline(A)delta A]\
+  & arrow overline(A) = U[1/2(U^dagger overline(U) - overline(U)^dagger U)compose F + overline(E)_RR]U^dagger\
+$
+
+And if $A$ is normal, we have $delta E, overline(E) in CC^n$, which means even the input $A$ is a hermitian matrix, $overline(E)_CC$ is different from $overline(E)_RR$ above.Then we have:
+
+$
+  &2delta L =tr[U[-(overline(U)^dagger U - U^dagger overline(U))compose F]U^dagger delta A + overline(E)_CC^dagger delta E + overline(E)_CC delta E^dagger]\
+  &=tr[1/2U[(U^dagger overline(U) - overline(U)^dagger U)compose F]U^dagger delta A+ overline(E)_CC^dagger delta E +h.c.]\
+  &=tr[1/2U[(U^dagger overline(U) - overline(U)^dagger U)compose F +overline(E)_CC^dagger]U^dagger delta A + h.c.]\
+  & = tr[overline(A)^dagger delta A + h.c.]\
+  & arrow overline(A) = U[1/2(U^dagger overline(U) - overline(U)^dagger U)compose F^* + overline(E)_CC]U^dagger\
+$
+QED.
+
+
+
 
 == Singular value decomposition <singular-value-decomposition>
 
@@ -1220,3 +1273,4 @@ function gradient(A)
     dA
 end
 ```
+
