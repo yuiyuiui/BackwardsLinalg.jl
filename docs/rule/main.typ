@@ -443,12 +443,12 @@ $
 
 Here, the $"copyltu"$ takes conjugate when copying elements to upper triangular part.
 
-== Eigenvalue decomposition <eigenvalue-decomposition>
+== Eigenvalue decomposition for normal matrix <eigenvalue-decomposition-normal>
 
 #rulebox([
-Symmetric eigenvalue decomposition
+Eigenvalue decomposition for normal matrix
 $ A = U E U^dagger, $
-where the input $A$ is a Hermitian matrix, the outputs $U$ is a unitary matrix and $E$ is a diagonal matrix.
+where the input $A$ is a normal matrix, the outputs $U$ is a unitary matrix and $E$ is a diagonal matrix.
 ],
 [
 $

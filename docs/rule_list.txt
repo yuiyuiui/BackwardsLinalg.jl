@@ -8,7 +8,9 @@ least sq / arg least sq        |         complex         done
 
 qr (all size)                  |         complex         done
 
-symeigen / nromal eigen        |         complex         done
+symeigen                       |         complex         done                    
+
+nromal eigen                   |         complex         done
 
 svd                            |         complex         done
 

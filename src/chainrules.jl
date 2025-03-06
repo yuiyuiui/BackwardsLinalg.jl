@@ -54,6 +54,15 @@ function rrule(::typeof(symeigen), A)
 	return (E, U), pullback
 end
 
+function rrule(::typeof(normeigen), A)
+	E, U = normeigen(A)
+	function pullback(dy)
+		ΔA = @thunk normeigen_back(E, U, unthunk.(dy)...)
+		return (NoTangent(), ΔA)
+	end
+	return (E, U), pullback
+end
+
 function rrule(::typeof(arg_lstsq), A, b)
 	x = arg_lstsq(A, b)
 	function pullback(dy)

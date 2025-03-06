@@ -30,6 +30,7 @@ include("mxmul.jl")
 include("scha_norm.jl")
 include("gmres.jl")
 include("pf.jl")
+include("normeigen.jl")
 
 include("chainrules.jl")
 
