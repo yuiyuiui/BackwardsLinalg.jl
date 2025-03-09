@@ -185,4 +185,11 @@ function rrule(::typeof(pf), A)
 	return pfA, pulllback
 end
 
-
+function rrule(::typeof(sdp), C, A, b)
+	X = sdp(C, A, b)
+	function pullback(X̄)
+		C̄, Ā, b̄ = @thunk sdp_back(C, A, b, X, unthunk(X̄))
+		return (NoTangent(), C̄, Ā, b̄)
+	end
+	return X, pullback
+end
