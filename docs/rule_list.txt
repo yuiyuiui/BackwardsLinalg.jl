@@ -34,7 +34,7 @@ Cholesky decomposition         |          complex        done
 
 LP                             |           real          done 
 
-SDP                            |
+SDP                            |           real          done
 
 GMRES                          |          complex        done
 
