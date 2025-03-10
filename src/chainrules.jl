@@ -188,7 +188,8 @@ end
 function rrule(::typeof(sdp), C, A, b)
 	X = sdp(C, A, b)
 	function pullback(X̄)
-		C̄, Ā, b̄ = @thunk sdp_back(C, A, b, X, unthunk(X̄))
+		X̄0 = Matrix(unthunk(X̄))
+		C̄, Ā, b̄ = @thunk sdp_back(C, A, b, X, X̄0)
 		return (NoTangent(), C̄, Ā, b̄)
 	end
 	return X, pullback

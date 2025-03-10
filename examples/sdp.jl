@@ -21,12 +21,13 @@ b1 = tr(A1 * I(n))  # 约束 1 的右侧值 b1，确保可行
 b2 = tr(A2 * I(n))  # 约束 2 的右侧值 b2，确保可行
 
 # 使用 JuMP + SCS 求解
-model = Model(SCS.Optimizer)
-@variable(model, X[1:n, 1:n], PSD)  # 定义半正定矩阵 X
-@objective(model, Min, tr(C * X))   # 目标是最小化 tr(C * X)
-@constraint(model, tr(A1 * X) == b1)  # 约束 1: tr(A1 * X) = b1
-@constraint(model, tr(A2 * X) == b2)  # 约束 2: tr(A2 * X) = b2
-optimize!(model)  # 求解问题
+model = Model(SCS.Optimizer);
+@variable(model, X[1:n, 1:n], PSD);  # 定义半正定矩阵 X
+@objective(model, Min, tr(C * X)) ;  # 目标是最小化 tr(C * X)
+@constraint(model, tr(A1 * X) == b1) ; # 约束 1: tr(A1 * X) = b1
+@constraint(model, tr(A2 * X) == b2) ; # 约束 2: tr(A2 * X) = b2
+set_silent(model)
+optimize!(model);  # 求解问题
 
 # 检查求解状态并输出结果
 if termination_status(model) == MOI.OPTIMAL

@@ -7,13 +7,14 @@ function sdp(C::Matrix{T}, A::Vector{Matrix{T}}, b::Vector{T}) where T
     for i in 1:m
         @constraint(model, tr(A[i] * X) == b[i])
     end
+    set_silent(model)
     optimize!(model)
     if termination_status(model) == MOI.OPTIMAL
-        return value(X)
+        return value.(X)
     end
 end
 
-function sdp_backward(C::Matrix{T}, A::Vector{Matrix{T}}, b::Vector{T}, X::Matrix{T}, X̄::Matrix{T}) where T
+function sdp_back(C::Matrix{T}, A::Vector{Matrix{T}}, b::Vector{T}, X::Matrix{T}, X̄::Matrix{T}) where T
     X = (X + X') / 2
     X̄ = (X̄ + X̄') / 2
     m = length(A)
@@ -36,5 +37,5 @@ function sdp_backward(C::Matrix{T}, A::Vector{Matrix{T}}, b::Vector{T}, X::Matri
         Ā[i] = U * LinearAlgebra.diagm(B̄[i,:]) * U'
     end
 
-    return Ā,b̄
+    return zero(C), Ā, b̄
 end
