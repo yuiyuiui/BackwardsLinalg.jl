@@ -46,67 +46,14 @@ end
 	b = [b1, b2]
 
 	testfb(b) = tr(BackwardsLinalg.sdp(C, A, b))
-
-	@test gradient_check(testfb, b)
-end
-
-@testset "sdp grad for C" begin
-	# 定义数据
-	Random.seed!(123)  # 设置随机种子
-	n = 4  # 矩阵的维度
-
-	# 生成对称的目标矩阵 C
-	C = rand(n, n)
-	C[2, 3] += 0.1
-	C = (C + C') / 2  # 确保对称性
-
-	# 生成对称的约束矩阵 A1 和 A2
-	A1 = rand(n, n)
-	A1 = (A1 + A1') / 2  # 确保对称性
-
-	A2 = rand(n, n)
-	A2 = (A2 + A2') / 2  # 确保对称性
-
-	# 生成约束的右侧值 b1 和 b2
-	b1 = tr(A1 * I(n))  # 约束 1 的右侧值 b1，确保可行
-	b2 = tr(A2 * I(n))  # 约束 2 的右侧值 b2，确保可行
-
-	A = [A1, A2]
-	b = [b1, b2]
-
 	testfC(C) = tr(BackwardsLinalg.sdp(C, A, b))
-
-	@test gradient_check(testfC, C)
-end
-
-@testset "sdp grad for A" begin
-	# 定义数据
-	Random.seed!(123)  # 设置随机种子
-	n = 4  # 矩阵的维度
-
-	# 生成对称的目标矩阵 C
-	C = rand(n, n)
-	C[2, 3] += 0.1
-	C = (C + C') / 2  # 确保对称性
-
-	# 生成对称的约束矩阵 A1 和 A2
-	A1 = rand(n, n)
-	A1 = (A1 + A1') / 2  # 确保对称性
-
-	A2 = rand(n, n)
-	A2 = (A2 + A2') / 2  # 确保对称性
-
-	# 生成约束的右侧值 b1 和 b2
-	b1 = tr(A1 * I(n))  # 约束 1 的右侧值 b1，确保可行
-	b2 = tr(A2 * I(n))  # 约束 2 的右侧值 b2，确保可行
-
-	A = [A1, A2]
-	b = [b1, b2]
-
 	testfA(A) = tr(BackwardsLinalg.sdp(C, A, b))
 
+	@test gradient_check(testfb, b)
+	@test gradient_check(testfC, C)
 	@test gradient_check_A(testfA, A)
 end
+
 
 
 

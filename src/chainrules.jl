@@ -194,3 +194,13 @@ function rrule(::typeof(sdp), C, A, b)
 	end
 	return X, pullback
 end
+
+function rrule(::typeof(BackwardsLinalg.fft), x::Vector{ComplexF64})
+	y = BackwardsLinalg.fft(x)
+	function pullback(ȳ)
+		x̄ = fft_back(x, unthunk(ȳ))
+		return (NoTangent(), x̄)
+	end
+	return y, pullback
+end
+

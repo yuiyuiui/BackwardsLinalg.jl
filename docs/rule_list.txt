@@ -14,7 +14,7 @@ nromal eigen                   |         complex         done
 
 svd                            |         complex         done
 
-rsvd                           |         complex     done but to improve
+rsvd                           |         complex         done
 
 schatten norm                  |          complex        done
 
