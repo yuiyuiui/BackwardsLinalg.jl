@@ -39,6 +39,7 @@ function my_gmres(A, b; maxiter = size(A, 2), abstol = 1e-5, reltol = 1e-5, x0 =
 	# 截取实际使用的 Hessenberg 矩阵
 	if k == 0  # 如果未提前退出，则 k = maxiter
 		k = maxiter
+		println("GMRES did not converge")
 	end
 
 	H = H0[1:k+1, 1:k]

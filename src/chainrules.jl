@@ -1,3 +1,6 @@
+import BackwardsLinalg: qr, lq, svd, rsvd, symeigen, normeigen, arg_lstsq, lstsq, mxmul, scha_norm, cls, det, inv, lneq, lu, norm_anlfunc, lp, gmres, pf, sdp, fft, fft_back, unfft, unfft_back
+import BackwardsLinalg: qr_back, lq_back, svd_back, symeigen_back, normeigen_back, arg_lstsq_back, lstsq_back, mxmul_back, scha_norm_back, cls_back, det_back, inv_back, lneq_back, lu_back, norm_anlfunc_back, lp_back, gmres_back, pf_back, sdp_back
+
 function rrule(::typeof(qr), A)
 	Q, R = qr(A)
 	function pullback(dy)
@@ -198,9 +201,26 @@ end
 function rrule(::typeof(BackwardsLinalg.fft), x::Vector{ComplexF64})
 	y = BackwardsLinalg.fft(x)
 	function pullback(ȳ)
-		x̄ = fft_back(x, unthunk(ȳ))
+		x̄ = BackwardsLinalg.fft_back(x, unthunk(ȳ))
 		return (NoTangent(), x̄)
 	end
 	return y, pullback
 end
 
+function rrule(::typeof(BackwardsLinalg.unfft), k, f)
+	y = BackwardsLinalg.unfft(k, f)
+	function pullback(ȳ)
+		x̄ = BackwardsLinalg.unfft_back(k, unthunk(ȳ))
+		return (NoTangent(), NoTangent(), x̄)
+	end
+	return y, pullback
+end
+
+function rrule(::typeof(inufft_t2), k, fhat; args...)
+	f = inufft_t2(k, fhat; args...)
+	function pullback(f̄)
+		f̄hat = inufft_t2_back(k, unthunk(f̄); args...)
+		return (NoTangent(), NoTangent(), f̄hat)
+	end
+	return f, pullback
+end

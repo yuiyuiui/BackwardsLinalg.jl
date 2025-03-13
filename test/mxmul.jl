@@ -13,9 +13,10 @@ end
 @testset "mxmul" begin
     T = ComplexF64
     Random.seed!(3)
-    M = 10
-    N = 5
-    K = 8
+    times = 6
+    M = 10 * times
+    N = 5 * times
+    K = 8 * times
     A = rand(T, M, N)
     B = rand(T, N, K)
 

@@ -2,7 +2,7 @@ module BackwardsLinalg
 
 using ChainRulesCore; import ChainRulesCore: rrule
 using LinearAlgebra; import LinearAlgebra: ldiv!
-using JuMP, GLPK, Zygote, SkewLinearAlgebra, SCS, FFTW
+using JuMP, GLPK, Zygote, SkewLinearAlgebra, SCS, FFTW, NFFT, NFFTTools
 
 struct ZeroAdder end
 Base.:+(a, zero::ZeroAdder) = a
@@ -32,6 +32,7 @@ include("gmres.jl")
 include("pf.jl")
 include("normeigen.jl")
 include("fft.jl")
+include("unfft.jl")
 
 include("chainrules.jl")
 
