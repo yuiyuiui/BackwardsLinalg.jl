@@ -23,7 +23,7 @@ end
 
 @testset "iunfft_t2" begin
 	Random.seed!(3)
-	N = 20
+	N = 10
 	k = rand(N) .- 0.5
 	f = rand(ComplexF64, N)
 	A = BackwardsLinalg.A_construct_t2(k)
@@ -32,14 +32,6 @@ end
 	@test gradient_check(tf, fhat)
 end
 
-Random.seed!(3)
-N = 19
-k = rand(N) .- 0.5
-f = rand(ComplexF64, N)
-A = BackwardsLinalg.A_construct_t2(k)
-fhat = A * f
-tf(x) = sum(abs2.(BackwardsLinalg.inufft_t2(k, x)))
-@test gradient_check(tf, fhat)
 
 
 

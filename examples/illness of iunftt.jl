@@ -21,13 +21,16 @@ plot(J)
 
 using LinearAlgebra,Plots,Random
 Random.seed!(3)
-M = 100
+M = 20
 cond_num = zeros(M)
-T = 1000
+T = 1000000
 for i in 1: M
     cond0 = 0.0
     for t in 1:T
-        A = rand(i,i)
+        if t%1000 == 0
+            println(i)
+        end
+        A =  rand(i,i)
         cond0 += cond(A)
     end
     cond_num[i] = cond0/T
@@ -36,3 +39,4 @@ plot(1:M,cond_num)
 
 
 
+cond_num[2]

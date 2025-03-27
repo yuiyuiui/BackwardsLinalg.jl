@@ -17,7 +17,7 @@ function gradient_check_A(f, A, η = 1e-5)
 	@show dy_expect
 	dy = f(A) - f(A .- η .* Ā)
 	@show dy
-	isapprox(dy, dy_expect, rtol = 1e-1, atol = 1e-8)
+	isapprox(dy, dy_expect, rtol = 5*1e-2, atol = 1e-8)
 end
 
 

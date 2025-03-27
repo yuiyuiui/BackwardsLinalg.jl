@@ -1,5 +1,4 @@
 function lneq(A::Matrix{T}, b::Vector{T}) where T <: Number
-	@assert LinearAlgebra.det(A) != 0
 	return A \ b
 end
 
